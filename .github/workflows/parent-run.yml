@@ -23,6 +23,11 @@ jobs:
         run: npm run build
       - name: Generate example file
         run: node index.js
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: ./example.txt # Specify the path to your generated file
       - name: Trigger express server
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
