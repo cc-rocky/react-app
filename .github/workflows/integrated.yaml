@@ -26,13 +26,13 @@ jobs:
         with:
           name: my-artifact # Specify the name of the artifact
           path: ./react-app/example.txt # Specify the path to your generated file
-      
+
       - name: Checkout Express Repo
         uses: actions/checkout@v2
         with:
-            repository: cc-rocky/express-app
-            ref: main
-            path: express-app
+          repository: cc-rocky/express-app
+          ref: main
+          path: express-app
 
       - name: Install Dependencies
         working-directory: express-app
@@ -40,9 +40,12 @@ jobs:
       - name: Generate child example file
         working-directory: express-app
         run: npm run generate
-      
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
           path: ./express-app/example1.txt # Specify the path to your generated file
+      - name: Selenium test
+        working-directory: express-app/selenium-test
+        run: npm install && npm run start
