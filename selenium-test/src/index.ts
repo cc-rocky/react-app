@@ -1,13 +1,13 @@
 // Import the Selenium WebDriver
 import { Builder, By, Key, until, WebDriver } from "selenium-webdriver";
-import firefox from "selenium-webdriver/firefox";
+import firefox from "selenium-webdriver/chrome";
 
 // Create firefox options with headless mode enabled
-const firefoxOptions = new firefox.Options();
+const firefoxOptions = new firefox.Options().addArguments("--headless");
 // Create a new instance of the WebDriver
 const driver: WebDriver = new Builder()
   .forBrowser("firefox")
-  .setFirefoxOptions(firefoxOptions) // You can use 'firefox', 'safari', etc. instead of 'chrome'
+  .setChromeOptions(firefoxOptions) // You can use 'firefox', 'safari', etc. instead of 'chrome'
   .build();
 
 // Navigate to a website
