@@ -46,6 +46,8 @@ jobs:
         with:
           name: my-artifact # Specify the name of the artifact
           path: ./express-app/example1.txt # Specify the path to your generated file
+      - name: Install Firefox
+        run: sudo apt-get install firefox
       - name: Selenium test
         working-directory: react-app/selenium-test
         run: npm install && npm run start
