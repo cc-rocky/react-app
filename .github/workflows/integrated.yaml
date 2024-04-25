@@ -1,0 +1,48 @@
+name: Build React app - Trigger express server
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout React Repo
+        uses: actions/checkout@v2
+        with:
+          repository: cc-rocky/react-app
+          ref: main
+          path: react-app
+
+      - name: Generate example file
+        working-directory: react-app
+        run: node index.js
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: ./example.txt # Specify the path to your generated file
+      
+      - name: Checkout Express Repo
+        uses: actions/checkout@v2
+        with:
+            repository: cc-rocky/express-app
+            ref: main
+            path: express-app
+
+      - name: Install Dependencies
+        working-directory: express-app
+        run: npm install
+      - name: Generate child example file
+        working-directory: express-app
+        run: npm run generate
+      
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: ./example1.txt # Specify the path to your generated file
