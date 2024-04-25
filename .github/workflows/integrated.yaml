@@ -25,7 +25,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: ./example.txt # Specify the path to your generated file
+          path: ./react-app/example.txt # Specify the path to your generated file
       
       - name: Checkout Express Repo
         uses: actions/checkout@v2
@@ -45,4 +45,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: ./example1.txt # Specify the path to your generated file
+          path: ./express-app/example1.txt # Specify the path to your generated file
