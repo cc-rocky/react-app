@@ -47,5 +47,5 @@ jobs:
           name: my-artifact # Specify the name of the artifact
           path: ./express-app/example1.txt # Specify the path to your generated file
       - name: Selenium test
-        working-directory: express-app/selenium-test
+        working-directory: react-app/selenium-test
         run: npm install && npm run start
