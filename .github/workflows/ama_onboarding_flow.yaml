@@ -1,0 +1,55 @@
+name: Add Member Step 1
+
+on: workflow_dispatch
+
+jobs:
+  add_member_step_1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cloning APC Provider Repo
+        uses: actions/checkout@v2
+        with:
+          repository: alyf-lab/alyf_provider
+          ref: apc-dev
+          path: apc-app
+
+      - uses: webfactory/ssh-agent@v0.5.4
+        working-directory: das
+        with:
+          ssh-private-key: |
+            ${{ secrets.SSH_PRIVATE_KEY }}
+            ${{ secrets.SSH_PRIVATE_KEY_ALYF_PROV_PKG }}
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.16.9"
+          channel: "stable"
+
+      - name: Activate Flutter
+        run: bash ./runs/flutter_activation.sh
+
+      - name: Flutter Test Start
+        run: bash ./runs/start_test.sh
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-reports
+          path: reports/testing
+
+      - name: Flutter Test End
+        run: bash ./runs/end_test.sh
+
+      - name: Register Member - 2
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+          owner: alyf-lab
+          repo: memreg_webapp
+          github_token: ${{secrets.AUTH_TOKEN}}
+          workflow_file_name: dev_automation.yaml
+          ref: main
+          wait_interval: 10
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
