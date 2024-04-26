@@ -1,0 +1,43 @@
+# name: Build React app - Trigger express server
+
+# on:
+#   push:
+#     branches:
+#       - master
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
+#       - name: Use Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version: "20"
+
+#       - name: Install Dependencies
+#         run: npm install
+
+#       - name: Run Build
+#         run: npm run build
+#       - name: Generate example file
+#         run: node index.js
+#       - name: Upload Artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: my-artifact # Specify the name of the artifact
+#           path: ./example.txt # Specify the path to your generated file
+        
+#       - name: Trigger express server
+#         uses: convictional/trigger-workflow-and-wait@v1.6.1
+#         with:
+#           owner: cc-rocky
+#           repo: express-app
+#           github_token: ${{secrets.PAN_TOKEN}}
+#           workflow_file_name: child-run.yml
+#           ref: main
+#           wait_interval: 10
+#           propagate_failure: true
+#           trigger_workflow: true
+#           wait_workflow: true
