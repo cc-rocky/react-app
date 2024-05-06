@@ -37,10 +37,25 @@ jobs:
         with:
           repository: cc-rocky/express-app
           ref: main
-      - name: Slack Notification
+
+      - name: Notify Slack - Test Success
+        if: success()
         uses: rtCamp/action-slack-notify@v2
+        with:
+          status: ${{ job.status }}
+          text: "Test Job succeeded!"
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          
+      - name: Notify Slack - Test Failure
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        with:
+          status: ${{ job.status }}
+          text: "Test Job failed!"
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+
       - name: Install Dependencies
         run: npm install
       - name: Generate child example file
