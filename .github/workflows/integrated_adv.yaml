@@ -15,7 +15,10 @@ jobs:
         with:
           repository: cc-rocky/react-app
           ref: main
-
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       - name: Generate example file
         run: node index.js
 
@@ -34,7 +37,10 @@ jobs:
         with:
           repository: cc-rocky/express-app
           ref: main
-
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
       - name: Install Dependencies
         run: npm install
       - name: Generate child example file
@@ -44,4 +50,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: example1.txt # Spe
+          path: example2.txt # Spe
