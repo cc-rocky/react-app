@@ -45,9 +45,11 @@ jobs:
         run: npm install
       - name: Generate child example file
         run: npm run generate
+      - name: Custom Error
+        run: flutter --version
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: example2.txt # Spe
+          path: example1.txt # Spe
