@@ -15,10 +15,18 @@ jobs:
         with:
           repository: cc-rocky/react-app
           ref: main
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+
+      - name: Notify Notification On Start
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notification_title: "{workflow} is Started"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
       - name: Generate example file
         run: node index.js
 
