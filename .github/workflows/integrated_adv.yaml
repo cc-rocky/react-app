@@ -22,7 +22,8 @@ jobs:
         with:
           status: ${{ job.status }}
           notification_title: "{workflow} is Started"
-          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          message_format: "{emoji} *{workflow}* is running in <{repo_url}|{repo}>"
+          mention_users: "U071X3ZHHF0"
           footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
