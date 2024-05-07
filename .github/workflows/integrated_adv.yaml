@@ -22,8 +22,8 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notify_when: "warnings"
           notification_title: "{workflow} is Started"
+          icon_success: ":large_orange_diamond:"
           message_format: "{emoji} *{workflow}* is running in <{repo_url}|{repo}>"
           mention_users: "U071X3ZHHF0"
           footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
