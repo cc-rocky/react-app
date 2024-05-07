@@ -38,15 +38,6 @@ jobs:
           repository: cc-rocky/express-app
           ref: main
 
-      - name: Notify Slack Action
-        uses: ravsamhq/notify-slack-action@2.3.0
-        if: always()
-        with:
-          status: ${{ job.status }}
-          notify_when: "failure"
-          notification_title: "{workflow} is failing"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
       - name: Install Dependencies
         run: npm install
       - name: Generate child example file
@@ -59,3 +50,12 @@ jobs:
         with:
           name: my-artifact # Specify the name of the artifact
           path: example1.txt # Spe
+      - name: Notify Slack Action
+        uses: ravsamhq/notify-slack-action@2.3.0
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: "failure"
+          notification_title: "{workflow} is failing"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
