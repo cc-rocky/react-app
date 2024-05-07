@@ -42,15 +42,17 @@ jobs:
         run: npm install
       - name: Generate child example file
         run: npm run generate
-      - name: Custom Error
-        run: flutter --version
+      # - name: Custom Error
+      #   run: flutter --version
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
           path: example1.txt # Spe
-      - name: Notify Slack Action
+
+
+      - name: Notify Notification On Faliure
         uses: ravsamhq/notify-slack-action@2.3.0
         if: always()
         with:
@@ -59,3 +61,15 @@ jobs:
           notification_title: "{workflow} is failing"
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Notification On Success
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
