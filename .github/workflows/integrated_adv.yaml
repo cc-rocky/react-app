@@ -22,7 +22,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notify_when: "warning"
+          notify_when: "warnings"
           notification_title: "{workflow} is Started"
           message_format: "{emoji} *{workflow}* is running in <{repo_url}|{repo}>"
           mention_users: "U071X3ZHHF0"
