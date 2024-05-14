@@ -1,0 +1,50 @@
+name: Trimilo - Frontend-Backend Deployment
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-react-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout React Repo
+        uses: actions/checkout@v2
+        with:
+          repository: cc-rocky/react-app
+          ref: main
+
+      - name: Notify Notification On Start
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "[Dev] Workflow *{workflow}* starting..."
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: APC Provider Generate Signup Link Test
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
+        with:
+            owner: cc-rocky
+            repo: express-app
+            github_token: ${{secrets.PAN_TOKEN}}
+            workflow_file_name: deploy-express-1.yaml
+            ref: main
+            wait_interval: 10
+            propagate_failure: true
+            trigger_workflow: true
+            wait_workflow: true
+        continue-on-error: true
+
+      - name: Generate example file
+        run: node index.js
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: example.txt # Specify the path to your generated file
