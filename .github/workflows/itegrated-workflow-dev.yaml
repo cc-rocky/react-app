@@ -50,3 +50,15 @@ jobs:
         with:
           name: my-artifact # Specify the name of the artifact
           path: example.txt # Specify the path to your generated file
+
+      - name: Notify Notification On Complete
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "[Dev] Workflow *{workflow}* completed"
+          message_format: null
+          footer: null
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
