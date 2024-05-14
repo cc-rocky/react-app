@@ -23,7 +23,7 @@ jobs:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
           notification_title: "[Dev] Workflow *{workflow}* starting..."
-          message_format:
+          message_format: null
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
