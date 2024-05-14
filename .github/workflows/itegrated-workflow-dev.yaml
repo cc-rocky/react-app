@@ -23,21 +23,22 @@ jobs:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
           notification_title: "[Dev] Workflow *{workflow}* starting..."
+          message_format:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
       - name: APC Provider Generate Signup Link Test
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
-            owner: cc-rocky
-            repo: express-app
-            github_token: ${{secrets.PAN_TOKEN}}
-            workflow_file_name: deploy-express-1.yaml
-            ref: main
-            wait_interval: 10
-            propagate_failure: true
-            trigger_workflow: true
-            wait_workflow: true
+          owner: cc-rocky
+          repo: express-app
+          github_token: ${{secrets.PAN_TOKEN}}
+          workflow_file_name: deploy-express-1.yaml
+          ref: main
+          wait_interval: 10
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
         continue-on-error: true
 
       - name: Generate example file
