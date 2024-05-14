@@ -1,0 +1,85 @@
+name: Build React app - Trigger express server
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+jobs:
+  build-react-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout React Repo
+        uses: actions/checkout@v2
+        with:
+          repository: cc-rocky/react-app
+          ref: main
+
+      - name: Notify Notification On Start
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "{workflow} is Started"
+          icon_success: ":large_orange_diamond:"
+          message_format: "{emoji} *{workflow}* is running in <{repo_url}|{repo}>"
+          mention_users: "U071X3ZHHF0"
+          footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Generate example file
+        run: node index.js
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: example.txt # Specify the path to your generated file
+  # cify the path to your generated file
+  build-express-app:
+    runs-on: ubuntu-latest
+    needs: build-react-project
+    steps:
+      - name: Checkout Express Repo
+        uses: actions/checkout@v2
+        with:
+          repository: cc-rocky/express-app
+          ref: main
+
+      - name: Install Dependencies
+        run: npm install
+      - name: Generate child example file
+        run: npm run generate
+      # - name: Custom Error
+      #   run: flutter --version
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact # Specify the name of the artifact
+          path: example1.txt # Spe
+
+      - name: Notify Notification On Success
+        uses: ravsamhq/notify-slack-action@v2
+        if: always()
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          footer: "Linked Repo <{repo_url}|{repo}> | <{workflow_url}|View Workflow>"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+      - name: Notify Notification On Faliure
+        uses: ravsamhq/notify-slack-action@2.3.0
+        if: always()
+        with:
+          status: ${{ job.status }}
+          notify_when: "failure"
+          notification_title: "{workflow} is failing"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
