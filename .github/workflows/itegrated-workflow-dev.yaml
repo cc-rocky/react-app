@@ -14,7 +14,6 @@ jobs:
         id: start_time
         run: |
           echo "::set-output name=start_time::$(date +%s)"
-          echo "Workflow started at $(date)"
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
@@ -23,7 +22,6 @@ jobs:
           ref: main
 
       - name: Notify Notification On Start
-
         uses: ravsamhq/notify-slack-action@v2
         if: always()
         with:
@@ -48,6 +46,8 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+          inputs: |
+            variable_name: ${{ github.event.some_value }}
         continue-on-error: true
 
       - name: Generate example file
@@ -67,7 +67,6 @@ jobs:
         id: end_time
         run: |
           echo "::set-output name=end_time::$(date +%s)"
-          echo "Workflow ended at $(date)"
 
       - name: Calculate duration
         id: duration
