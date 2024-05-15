@@ -69,7 +69,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration_minutes.outputs.duration_minutes }}"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration_minutes.outputs.duration }}"
           message_format: null
           footer: null
         env:
