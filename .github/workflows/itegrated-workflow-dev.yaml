@@ -56,6 +56,7 @@ jobs:
           token: ${{ secrets.PAN_TOKEN }}
           wait-for-completion: true
           # inputs: '{ "message": "blah blah", "debug": true }'
+        continue-on-error: true
 
       - name: Generate example file
         id: generate
