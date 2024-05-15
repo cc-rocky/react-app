@@ -52,14 +52,15 @@ jobs:
 
       - name: Generate example file
         id: generate
-        run: node index.js
+        run: node index.js && npm error
+        continue-on-error: true
 
       - name: Upload Artifact
         id: artifect-upload
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: example1.txt # Specify the path to your generated file
+          path: example.txt # Specify the path to your generated file
         continue-on-error: true
 
       - name: Log end time
