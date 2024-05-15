@@ -33,29 +33,20 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-      # - name: Express App Deployment Trigger
-      #   id: express-trigger
-      #   uses: convictional/trigger-workflow-and-wait@v1.6.1
-      #   with:
-      #     owner: cc-rocky
-      #     repo: express-app
-      #     github_token: ${{secrets.PAN_TOKEN}}
-      #     workflow_file_name: deploy-express-1.yaml
-      #     ref: main
-      #     wait_interval: 10
-      #     propagate_failure: true
-      #     trigger_workflow: true
-      #     wait_workflow: true
-      #   continue-on-error: true
-
       - name: Express App Deployment Trigger
-        uses: benc-uk/workflow-dispatch@v1
+        id: express-trigger
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
-          workflow: deploy-express-1.yaml
-          repo: cc-rocky/express-app
-          # inputs: '{ "message": "blah blah", "something": false }'
-          # Required when using the `repo` option. Either a PAT or a token generated from the GitHub app or CLI
-          token: "${{ secrets.PAN_TOKEN }}"
+          owner: cc-rocky
+          repo: express-app
+          github_token: ${{secrets.PAN_TOKEN}}
+          workflow_file_name: deploy-express-1.yaml
+          ref: main
+          wait_interval: 10
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+        continue-on-error: true
 
       - name: Generate example file
         id: generate
