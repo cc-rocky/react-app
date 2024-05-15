@@ -51,7 +51,7 @@ jobs:
       - name: Express App Deployment Trigger
         uses: benc-uk/workflow-dispatch@v1
         with:
-          workflow: my-workflow.yaml
+          workflow: deploy-express-1.yaml
           repo: cc-rocky/express-app
           inputs: '{ "message": "blah blah", "something": false }'
           # Required when using the `repo` option. Either a PAT or a token generated from the GitHub app or CLI
