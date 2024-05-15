@@ -10,12 +10,11 @@ jobs:
   build-react-project:
     runs-on: ubuntu-latest
     steps:
-      - name: Get start time
-        id: start_time
-        run: echo "::set-output name=start_time::${{ github.event.workflow_run.created_at }}"
-
       - name: Log start time
-        run: echo "Workflow started at $(date)"
+        id: start_time
+        run: |
+          echo "::set-output name=start_time::$(date +%s)"
+          echo "Workflow started at $(date)"
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
@@ -58,17 +57,20 @@ jobs:
           name: my-artifact # Specify the name of the artifact
           path: example.txt # Specify the path to your generated file
 
-      # - name: Get completion time
-      #   id: end_time
-      #   run: echo "::set-output name=end_time::${{ github. }}"
+      - name: Log end time
+        id: end_time
+        run: |
+          echo "::set-output name=end_time::$(date +%s)"
+          echo "Workflow ended at $(date)"
 
       - name: Calculate duration
         id: duration
-        run: echo "::set-output name=duration::$(($(date -d "${{ steps.end_time.outputs.end_time }}" +%s) - $(date -d "${{ steps.start_time.outputs.start_time }}" +%s)))"
-
-      - name: Convert duration to minutes
-        id: duration_minutes
-        run: echo "::set-output name=duration_minutes::$((${{ steps.duration.outputs.duration }} / 60))"
+        run: |
+          start_time=${{ steps.start_time.outputs.start_time }}
+          end_time=${{ steps.end_time.outputs.end_time }}
+          duration=$((end_time - start_time))
+          duration_minutes=$((duration / 60))
+          echo "::set-output name=duration_minutes::$duration_minutes"
 
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
@@ -76,7 +78,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration_minutes.outputs.duration }}"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_minutes }}"
           message_format: null
           footer: null
         env:
