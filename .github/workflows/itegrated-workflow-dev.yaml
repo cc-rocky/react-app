@@ -10,6 +10,10 @@ jobs:
   build-react-project:
     runs-on: ubuntu-latest
     steps:
+      - name: Get start time
+        id: start_time
+        run: echo "::set-output name=start_time::${{ github.event.workflow_run.created_at }}"
+
       - name: Checkout React Repo
         uses: actions/checkout@v2
         with:
@@ -51,13 +55,21 @@ jobs:
           name: my-artifact # Specify the name of the artifact
           path: example.txt # Specify the path to your generated file
 
+      - name: Calculate duration
+        id: duration
+        run: echo "::set-output name=duration::$(($(date -d "${{ steps.end_time.outputs.end_time }}" +%s) - $(date -d "${{ steps.start_time.outputs.start_time }}" +%s)))"
+
+      - name: Convert duration to minutes
+        id: duration_minutes
+        run: echo "::set-output name=duration_minutes::$((${{ steps.duration.outputs.duration }} / 60))"
+
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
         if: always()
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration_minutes.outputs.duration_minutes }}"
           message_format: null
           footer: null
         env:
