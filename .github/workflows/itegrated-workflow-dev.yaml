@@ -75,19 +75,17 @@ jobs:
             duration_minutes=$((duration / 60))
             echo "::set-output name=duration_output::${duration_minutes}m"
           fi
-
-      - name: Count failed steps
+      - name: Count Failed Steps
+        id: count_failed_steps
         run: |
           failed_steps=0
-          if [ -f $GITHUB_EVENT_PATH ]; then
-            for step in $(jq -r '.jobs."build-react-project".steps[].conclusion' $GITHUB_EVENT_PATH); do
-              if [ "$step" = "failure" ]; then
-                failed_steps=$((failed_steps + 1))
-              fi
-            done
-          fi
-          echo "::set-output name=failed_steps::$failed_steps"
-          
+          for step_id in ${{ steps.*.id }}; do
+            # if [[ "${{ steps.step_id.outcome }}" == "failure" ]]; then
+            #   failed_steps=$((failed_steps + 1))
+            # fi
+            echo "${step_id}"
+          done
+          echo "::set-output name=failed_steps_count::$failed_steps"
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
         if: always()
