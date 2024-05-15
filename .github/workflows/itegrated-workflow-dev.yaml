@@ -33,20 +33,29 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-      - name: Express App Deployment Trigger
-        id: express-trigger
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
+      # - name: Express App Deployment Trigger
+      #   id: express-trigger
+      #   uses: convictional/trigger-workflow-and-wait@v1.6.1
+      #   with:
+      #     owner: cc-rocky
+      #     repo: express-app
+      #     github_token: ${{secrets.PAN_TOKEN}}
+      #     workflow_file_name: deploy-express-1.yaml
+      #     ref: main
+      #     wait_interval: 10
+      #     propagate_failure: true
+      #     trigger_workflow: true
+      #     wait_workflow: true
+      #   continue-on-error: true
+
+      - name: Invoke workflow in another repo with inputs
+        uses: aurelien-baudet/workflow-dispatch@v2
         with:
-          owner: cc-rocky
-          repo: express-app
-          github_token: ${{secrets.PAN_TOKEN}}
-          workflow_file_name: deploy-express-1.yaml
-          ref: main
-          wait_interval: 10
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
-        continue-on-error: true
+          workflow: deploy-express-1.yaml
+          repo: cc-rocky/express-app
+          token: ${{ secrets.PAN_TOKEN }}
+          wait-for-completion: true
+          inputs: '{ "message": "blah blah", "debug": true }'
 
       - name: Generate example file
         id: generate
