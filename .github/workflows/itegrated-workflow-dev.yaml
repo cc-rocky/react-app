@@ -55,7 +55,7 @@ jobs:
           repo: cc-rocky/express-app
           token: ${{ secrets.PAN_TOKEN }}
           wait-for-completion: true
-          inputs: '{ "message": "blah blah", "debug": true }'
+          # inputs: '{ "message": "blah blah", "debug": true }'
 
       - name: Generate example file
         id: generate
