@@ -46,6 +46,7 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
+        continue-on-error: true
 
       - name: Generate example file
         run: node index.js
@@ -78,8 +79,13 @@ jobs:
       - name: Get failure count
         id: count_failures
         run: |
-          echo "${{steps}}"
-          echo "::set-output name=failure_count::$(jq '.jobs[].steps[] | select(.outcome == "failure") | .name' $GITHUB_EVENT_PATH | wc -l)"
+          failed_steps=0
+          for step in $(jq -r '.jobs.build.steps[].conclusion' $GITHUB_EVENT_PATH); do
+            if [ "$step" = "failure" ]; then
+              failed_steps=$((failed_steps + 1))
+            fi
+          done
+          echo "::set-output name=failed_steps::$failed_steps"
 
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
