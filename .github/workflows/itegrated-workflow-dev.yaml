@@ -46,8 +46,6 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-          # client_payload: |
-          #   {"name": "express-trigger"}
         continue-on-error: true
 
       - name: Generate example file
@@ -91,7 +89,6 @@ jobs:
               failed_steps=$((failed_steps + 1))
           fi
           echo "failed_steps_count=$failed_steps" >> $GITHUB_OUTPUT
-
 
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
