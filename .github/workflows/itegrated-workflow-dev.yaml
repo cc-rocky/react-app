@@ -69,8 +69,12 @@ jobs:
           start_time=${{ steps.start_time.outputs.start_time }}
           end_time=${{ steps.end_time.outputs.end_time }}
           duration=$((end_time - start_time))
-          duration_minutes=$((duration / 60))
-          echo "::set-output name=duration_minutes::$duration_minutes"
+          if [[ $duration -lt 60 ]]; then
+            echo "::set-output name=duration_output::${duration}s"
+          else
+            duration_minutes=$((duration / 60))
+            echo "::set-output name=duration_output::${duration_minutes}m"
+          fi
 
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
@@ -78,7 +82,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_minutes }}"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_output }}"
           message_format: null
           footer: null
         env:
