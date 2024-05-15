@@ -23,6 +23,7 @@ jobs:
           ref: main
 
       - name: Notify Notification On Start
+
         uses: ravsamhq/notify-slack-action@v2
         if: always()
         with:
@@ -34,7 +35,8 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-      - name: APC Provider Generate Signup Link Test
+      - name: Express App Deployment Trigger
+        id: express-trigger
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: cc-rocky
@@ -79,11 +81,9 @@ jobs:
         id: count_failed_steps
         run: |
           failed_steps=0
-          for step_id in ${{ steps.*.id }}; do
-            # if [[ "${{ steps.step_id.outcome }}" == "failure" ]]; then
-            #   failed_steps=$((failed_steps + 1))
-            # fi
-            echo "${step_id}"
+          if [[ "${{ steps.express-trigger.outcome }}" == "failure" ]]; then
+              failed_steps=$((failed_steps + 1))
+          fi
           done
           echo "::set-output name=failed_steps_count::$failed_steps"
       - name: Notify Notification On Complete
