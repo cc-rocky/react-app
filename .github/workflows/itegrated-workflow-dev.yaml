@@ -46,7 +46,7 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-          client_payload: "{\"adsdas\":\"Rocky\"}"
+          client_payload: '{\"adsdas\":\"Rocky\"}'
         continue-on-error: true
 
       # - name: Invoke workflow in another repo with inputs
