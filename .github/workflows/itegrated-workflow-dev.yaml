@@ -76,6 +76,12 @@ jobs:
             echo "::set-output name=duration_output::${duration_minutes}m"
           fi
 
+      - name: Get failure count
+        id: count_failures
+        run: |
+          failure_count=$(jq '.jobs[].steps | map(select(.conclusion == "failure")) | length' $GITHUB_EVENT_PATH)
+          echo "::set-output name=failure_count::$failure_count"
+          
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
         if: always()
