@@ -14,8 +14,8 @@ jobs:
         id: start_time
         run: echo "::set-output name=start_time::${{ github.event.workflow_run.created_at }}"
 
-      - name: Log start time
-        run: echo "Workflow started at $(date)"
+      # - name: Log start time
+      #   run: echo "Workflow started at $(date)"
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
