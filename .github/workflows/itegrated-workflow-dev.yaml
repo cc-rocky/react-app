@@ -46,7 +46,7 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-          client_payload: '{"data": "Dev"}'
+          client_payload: '{"enviornment": "Dev"}'
         continue-on-error: true
 
       - name: Generate example file
