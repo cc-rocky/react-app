@@ -47,7 +47,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
           client_payload: |
-            "{}"
+            {}
         continue-on-error: true
 
       - name: Generate example file
