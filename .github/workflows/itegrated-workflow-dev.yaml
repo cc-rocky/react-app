@@ -54,7 +54,11 @@ jobs:
         with:
           name: my-artifact # Specify the name of the artifact
           path: example.txt # Specify the path to your generated file
-
+          
+      - name: Get completion time
+        id: end_time
+        run: echo "::set-output name=end_time::${{ github.event.workflow_run.completed_at }}"
+      
       - name: Calculate duration
         id: duration
         run: echo "::set-output name=duration::$(($(date -d "${{ steps.end_time.outputs.end_time }}" +%s) - $(date -d "${{ steps.start_time.outputs.start_time }}" +%s)))"
