@@ -79,6 +79,7 @@ jobs:
       - name: Get failure count
         id: count_failures
         run: |
+          echo "${{steps}}"
           echo "::set-output name=failure_count::$(jq '.jobs[].steps[] | select(.outcome == "failure") | .name' $GITHUB_EVENT_PATH | wc -l)"
 
       - name: Notify Notification On Complete
