@@ -46,7 +46,6 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-        continue-on-error: true
 
       - name: Generate example file
         run: node index.js
