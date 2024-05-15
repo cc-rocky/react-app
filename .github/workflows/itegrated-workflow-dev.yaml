@@ -80,7 +80,7 @@ jobs:
         id: count_failures
         run: |
           failed_steps=0
-          for step in $(jq -r '.jobs.build.steps[].conclusion' $GITHUB_EVENT_PATH); do
+          for step in $(jq -r '.jobs.build-react-project.steps[].conclusion' $GITHUB_EVENT_PATH); do
             if [ "$step" = "failure" ]; then
               failed_steps=$((failed_steps + 1))
             fi
