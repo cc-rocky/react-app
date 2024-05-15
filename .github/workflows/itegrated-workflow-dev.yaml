@@ -79,8 +79,7 @@ jobs:
       - name: Get failure count
         id: count_failures
         run: |
-          failure_count=$(jq '.jobs[] | select(.status == "completed" and .conclusion == "failure") | .steps | length' $GITHUB_EVENT_PATH)
-          echo "::set-output name=failure_count::$failure_count"
+          echo "::set-output name=failure_count::$(jq '.jobs[].steps[] | select(.outcome == "failure") | .name' $GITHUB_EVENT_PATH | wc -l)"
 
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
