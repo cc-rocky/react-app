@@ -47,7 +47,7 @@ jobs:
           trigger_workflow: true
           wait_workflow: true
           client_payload: |
-            {}
+            {"name": "express-trigger"}
         continue-on-error: true
 
       - name: Generate example file
