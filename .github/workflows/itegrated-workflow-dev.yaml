@@ -33,30 +33,31 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-      # - name: Express App Deployment Trigger
-      #   id: express-trigger
-      #   uses: convictional/trigger-workflow-and-wait@v1.6.1
-      #   with:
-      #     owner: cc-rocky
-      #     repo: express-app
-      #     github_token: ${{secrets.PAN_TOKEN}}
-      #     workflow_file_name: deploy-express-1.yaml
-      #     ref: main
-      #     wait_interval: 10
-      #     propagate_failure: true
-      #     trigger_workflow: true
-      #     wait_workflow: true
-      #   continue-on-error: true
-
-      - name: Invoke workflow in another repo with inputs
-        uses: aurelien-baudet/workflow-dispatch@v2
+      - name: Express App Deployment Trigger
+        id: express-trigger
+        uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
-          workflow: deploy-express-1.yaml
-          repo: cc-rocky/express-app
-          token: ${{ secrets.PAN_TOKEN }}
-          wait-for-completion: true
-          # inputs: '{ "message": "blah blah", "debug": true }'
+          owner: cc-rocky
+          repo: express-app
+          github_token: ${{secrets.PAN_TOKEN}}
+          workflow_file_name: deploy-express-1.yaml
+          ref: main
+          wait_interval: 10
+          propagate_failure: true
+          trigger_workflow: true
+          wait_workflow: true
+          client_payload: "{\"name\":\"Rocky\"}"
         continue-on-error: true
+
+      # - name: Invoke workflow in another repo with inputs
+      #   uses: aurelien-baudet/workflow-dispatch@v2
+      #   with:
+      #     workflow: deploy-express-1.yaml
+      #     repo: cc-rocky/express-app
+      #     token: ${{ secrets.PAN_TOKEN }}
+      #     wait-for-completion: true
+      #     # inputs: '{ "message": "blah blah", "debug": true }'
+      #   continue-on-error: true
 
       - name: Generate example file
         id: generate
@@ -86,7 +87,13 @@ jobs:
             echo "duration_output=${duration}s" >> $GITHUB_OUTPUT
           else
             duration_minutes=$((duration / 60))
-            echo "duration_output=${duration_minutes}m" >> $GITHUB_OUTPUT
+            if [[ $duration_minutes -lt 60 ]]; then
+              echo "duration_output=${duration_minutes}m" >> $GITHUB_OUTPUT
+            else
+              duration_hours=$((duration_minutes / 60))
+              duration_remaining_minutes=$((duration_minutes % 60))
+              echo "duration_output=${duration_hours}h ${duration_remaining_minutes}m" >> $GITHUB_OUTPUT
+            fi
           fi
       - name: Count Failed Steps
         id: count_failed_steps
