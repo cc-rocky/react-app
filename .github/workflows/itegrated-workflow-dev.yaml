@@ -51,6 +51,7 @@ jobs:
         continue-on-error: true
 
       - name: Generate example file
+        id: generate
         run: node index.js
 
       - name: Upload Artifact
@@ -97,7 +98,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_output }}"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_output }}. Tests:3, Failures:${{steps.count_failed_steps.outputs.failed_steps_count}}"
           message_format: null
           footer: null
         env:
