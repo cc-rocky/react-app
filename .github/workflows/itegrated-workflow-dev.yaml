@@ -54,10 +54,12 @@ jobs:
         run: node index.js
 
       - name: Upload Artifact
+        id: artifect-upload
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact # Specify the name of the artifact
-          path: example.txt # Specify the path to your generated file
+          path: example1.txt # Specify the path to your generated file
+        continue-on-error: true
 
       - name: Log end time
         id: end_time
@@ -84,8 +86,11 @@ jobs:
           if [[ "${{ steps.express-trigger.outcome }}" == "failure" ]]; then
               failed_steps=$((failed_steps + 1))
           fi
-          done
+          if [[ "${{ steps.artifect-upload.outcome }}" == "failure" ]]; then
+              failed_steps=$((failed_steps + 1))
+          fi
           echo "::set-output name=failed_steps_count::$failed_steps"
+
       - name: Notify Notification On Complete
         uses: ravsamhq/notify-slack-action@v2
         if: always()
