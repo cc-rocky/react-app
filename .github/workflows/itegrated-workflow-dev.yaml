@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Calculate Steps Log Time
+        id: start_time
         uses: RockyIsHere/actions-calculate-log-time@v0.0.2
 
       - name: Checkout React Repo
