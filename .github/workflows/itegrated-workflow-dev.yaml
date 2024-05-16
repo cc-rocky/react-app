@@ -14,9 +14,6 @@ jobs:
         run: |
           echo "Start Time: ${{ github.event.repository.created_at }}"
           echo "Start Time: ${{ github.event.repository.updated_at }}"
-      - name: Calculate Steps Log Time
-        id: start_time
-        uses: RockyIsHere/actions-calculate-log-time@v0.0.5
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
@@ -74,29 +71,33 @@ jobs:
           path: example.txt # Specify the path to your generated file
         continue-on-error: true
 
-      - name: Log end time
-        id: end_time
-        run: |
-          echo "end_time=$(date +%s)" >> $GITHUB_OUTPUT
+      # - name: Log end time
+      #   id: end_time
+      #   run: |
+      #     echo "end_time=$(date +%s)" >> $GITHUB_OUTPUT
 
-      - name: Calculate duration
+      # - name: Calculate duration
+      #   id: duration
+      #   run: |
+      #     start_time=${{ steps.start_time.outputs.start_time }}
+      #     end_time=${{ steps.end_time.outputs.end_time }}
+      #     duration=$((end_time - start_time))
+      #     if [[ $duration -lt 60 ]]; then
+      #       echo "duration_output=${duration}s" >> $GITHUB_OUTPUT
+      #     else
+      #       duration_minutes=$((duration / 60))
+      #       if [[ $duration_minutes -lt 60 ]]; then
+      #         echo "duration_output=${duration_minutes}m" >> $GITHUB_OUTPUT
+      #       else
+      #         duration_hours=$((duration_minutes / 60))
+      #         duration_remaining_minutes=$((duration_minutes % 60))
+      #         echo "duration_output=${duration_hours}h ${duration_remaining_minutes}m" >> $GITHUB_OUTPUT
+      #       fi
+      #     fi
+      - name: Calculate Steps Log Time
         id: duration
-        run: |
-          start_time=${{ steps.start_time.outputs.start_time }}
-          end_time=${{ steps.end_time.outputs.end_time }}
-          duration=$((end_time - start_time))
-          if [[ $duration -lt 60 ]]; then
-            echo "duration_output=${duration}s" >> $GITHUB_OUTPUT
-          else
-            duration_minutes=$((duration / 60))
-            if [[ $duration_minutes -lt 60 ]]; then
-              echo "duration_output=${duration_minutes}m" >> $GITHUB_OUTPUT
-            else
-              duration_hours=$((duration_minutes / 60))
-              duration_remaining_minutes=$((duration_minutes % 60))
-              echo "duration_output=${duration_hours}h ${duration_remaining_minutes}m" >> $GITHUB_OUTPUT
-            fi
-          fi
+        uses: RockyIsHere/actions-calculate-log-time@v0.0.6
+
       - name: Count Failed Steps
         id: count_failed_steps
         run: |
@@ -115,7 +116,7 @@ jobs:
         with:
           status: ${{ job.status }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration_output }}. Tests:3, Failures:${{steps.count_failed_steps.outputs.failed_steps_count}}"
+          notification_title: "[Dev] Workflow *{workflow}* completed in ${{steps.duration.outputs.duration }}. Tests:3, Failures:${{steps.count_failed_steps.outputs.failed_steps_count}}"
           message_format: null
           footer: null
         env:
