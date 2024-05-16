@@ -10,6 +10,9 @@ jobs:
   build-react-project:
     runs-on: ubuntu-latest
     steps:
+      - name: Test
+        run: |
+          echo "Start Time: ${{ github.event.created_at }}"
       - name: Calculate Steps Log Time
         id: start_time
         uses: RockyIsHere/actions-calculate-log-time@v0.0.5
