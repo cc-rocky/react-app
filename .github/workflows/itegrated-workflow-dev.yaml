@@ -12,7 +12,8 @@ jobs:
     steps:
       - name: Test
         run: |
-          echo "Start Time: ${{ github.event.created_at }}"
+          echo "Start Time: ${{ github.event.repository.created_at }}"
+          echo "Start Time: ${{ github.event.repository.updated_at }}"
       - name: Calculate Steps Log Time
         id: start_time
         uses: RockyIsHere/actions-calculate-log-time@v0.0.5
