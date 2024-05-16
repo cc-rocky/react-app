@@ -10,10 +10,8 @@ jobs:
   build-react-project:
     runs-on: ubuntu-latest
     steps:
-      - name: Log start time
-        id: start_time
-        run: |
-          echo "start_time=$(date +%s)" >> $GITHUB_OUTPUT
+      - name: Calculate Steps Log Time
+        uses: RockyIsHere/actions-calculate-log-time@log
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
