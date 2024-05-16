@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Calculate Steps Log Time
         id: start_time
-        uses: RockyIsHere/actions-calculate-log-time@v0.0.2
+        uses: RockyIsHere/actions-calculate-log-time@v0.0.3
 
       - name: Checkout React Repo
         uses: actions/checkout@v2
