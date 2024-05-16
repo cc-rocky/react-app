@@ -96,7 +96,7 @@ jobs:
       #     fi
       - name: Calculate Steps Log Time
         id: duration
-        uses: RockyIsHere/actions-calculate-log-time@v0.0.9
+        uses: RockyIsHere/actions-calculate-log-time@v0.1.0
         with:
           start_time: ${{ github.event.repository.created_at }}
 
