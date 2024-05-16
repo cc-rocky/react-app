@@ -26,7 +26,6 @@ jobs:
           echo $(date)
       - name: Test
         run: |
-          echo "Start Time: ${{ github.event.repository.created_at }}"
           echo "Start Time: ${{ github.event.repository.updated_at }}"
 
       - name: Checkout React Repo
