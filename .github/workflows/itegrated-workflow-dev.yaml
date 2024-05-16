@@ -26,8 +26,7 @@ jobs:
         run: |
           cat run_details.json
           start_time=$(jq -r '.created_at' run_details.json)
-          echo "Start Time: $(date -d start_time + %s)"
-          echo $(date)
+          echo "Start Time: $(date -d "$start_time" +%s)"
       - name: Test
         run: |
           echo "Start Time: ${{ github.event.repository.updated_at }}"
