@@ -26,7 +26,7 @@ jobs:
         run: |
           cat run_details.json
           start_time=$(jq -r '.created_at' run_details.json)
-          echo "Start Time: $(start_time + %s)"
+          echo "Start Time: $(date -d start_time + %s)"
           echo $(date)
       - name: Test
         run: |
@@ -50,20 +50,20 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
-      - name: Express App Deployment Trigger
-        id: express-trigger
-        uses: convictional/trigger-workflow-and-wait@v1.6.1
-        with:
-          owner: cc-rocky
-          repo: express-app
-          github_token: ${{secrets.PAN_TOKEN}}
-          workflow_file_name: deploy-express-1.yaml
-          ref: main
-          wait_interval: 10
-          propagate_failure: true
-          trigger_workflow: true
-          wait_workflow: true
-        continue-on-error: true
+      # - name: Express App Deployment Trigger
+      #   id: express-trigger
+      #   uses: convictional/trigger-workflow-and-wait@v1.6.1
+      #   with:
+      #     owner: cc-rocky
+      #     repo: express-app
+      #     github_token: ${{secrets.PAN_TOKEN}}
+      #     workflow_file_name: deploy-express-1.yaml
+      #     ref: main
+      #     wait_interval: 10
+      #     propagate_failure: true
+      #     trigger_workflow: true
+      #     wait_workflow: true
+      #   continue-on-error: true
 
       # - name: Invoke workflow in another repo with inputs
       #   uses: aurelien-baudet/workflow-dispatch@v2
