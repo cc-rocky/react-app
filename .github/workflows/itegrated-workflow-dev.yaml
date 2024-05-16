@@ -21,6 +21,7 @@ jobs:
 
       - name: Extract Start Time
         run: |
+          cat run_details.json
           start_time=$(jq -r '.created_at' run_details.json)
           echo "Start Time: $(start_time + %s)"
           echo $(date)
