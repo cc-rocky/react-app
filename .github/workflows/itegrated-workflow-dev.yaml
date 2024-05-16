@@ -10,6 +10,19 @@ jobs:
   build-react-project:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Workflow Run Details
+        id: get_run_details
+        run: |
+          echo "::set-output name=run_id::$(echo $GITHUB_RUN_ID)"
+          curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/actions/runs/$(echo $GITHUB_RUN_ID) \
+            > run_details.json
+
+      - name: Extract Start Time
+        run: |
+          start_time=$(jq -r '.created_at' run_details.json)
+          echo "Start Time: $start_time"
       - name: Test
         run: |
           echo "Start Time: ${{ github.event.repository.created_at }}"
@@ -98,7 +111,7 @@ jobs:
         id: duration
         uses: RockyIsHere/actions-calculate-log-time@v0.1.0
         with:
-          start_time: ${{ github.event.created }}
+          start_time: ${{  }}
 
       - name: Count Failed Steps
         id: count_failed_steps
