@@ -116,6 +116,8 @@ jobs:
         uses: RockyIsHere/actions-calculate-log-time@V0.1.5
         with:
           start_time: ${{ github.event.repository.created_at }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Count Failed Steps
         id: count_failed_steps
