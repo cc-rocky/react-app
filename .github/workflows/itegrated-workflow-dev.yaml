@@ -96,9 +96,9 @@ jobs:
       #     fi
       - name: Calculate Steps Log Time
         id: duration
-        uses: RockyIsHere/actions-calculate-log-time@v0.0.7
-        env:
-          CREATED_AT: ${{ github.event.repository.created_at }}
+        uses: RockyIsHere/actions-calculate-log-time@v0.0.8
+        with:
+          start_time: ${{ github.event.repository.created_at }}
 
       - name: Count Failed Steps
         id: count_failed_steps
