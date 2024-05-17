@@ -114,7 +114,7 @@ jobs:
       #     fi
       - name: Calculate Steps Log Time
         id: duration
-        uses: RockyIsHere/actions-calculate-log-time@v0.2.1
+        uses: RockyIsHere/actions-calculate-log-time@v0.2.2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
